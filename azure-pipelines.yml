@@ -10,7 +10,7 @@ stages:
     steps:
     - task: ServiceNow-DevOps-Agent-Job-Notification@1
       inputs:
-        connectedServiceName: 'devopsdev3_Mohan'
+        connectedServiceName: 'amar_devops'
         Phase: 'STARTED'
     - task: Bash@3
       inputs:
@@ -21,14 +21,14 @@ stages:
           echo 'Hello world'
     - task: ServiceNow-DevOps-Agent-Job-Notification@1
       inputs:
-        connectedServiceName: 'devopsdev3_Mohan'
+        connectedServiceName: 'amar_devops'
         Phase: 'COMPLETED'
   - job: 'Test'
     dependsOn: 'Build'
     steps:
     - task: ServiceNow-DevOps-Agent-Job-Notification@1
       inputs:
-        connectedServiceName: 'devopsdev3_Mohan'
+        connectedServiceName: 'amar_devops'
         upstream: 'Build'
         Phase: 'STARTED'
     - task: UsePythonVersion@0
@@ -54,7 +54,7 @@ stages:
       condition: succeededOrFailed()
     - task: ServiceNow-DevOps-Agent-Job-Notification@1
       inputs:
-        connectedServiceName: 'devopsdev3_Mohan'
+        connectedServiceName: 'amar_devops'
         upstream: 'Build'
         Phase: 'COMPLETED'
 - stage: Test
@@ -64,7 +64,7 @@ stages:
     steps:
     - task: ServiceNow-DevOps-Agent-Job-Notification@1
       inputs:
-        connectedServiceName: 'devopsdev3_Mohan'
+        connectedServiceName: 'amar_devops'
         upstream: 'Test'
         Phase: 'STARTED'
     - task: Bash@3
@@ -77,7 +77,7 @@ stages:
 
     - task: ServiceNow-DevOps-Agent-Job-Notification@1
       inputs:
-        connectedServiceName: 'devopsdev3_Mohan'
+        connectedServiceName: 'amar_devops'
         upstream: 'Test'
         Phase: 'COMPLETED'
 
@@ -87,7 +87,7 @@ stages:
     steps:
     - task: ServiceNow-DevOps-Server-Job-Notification@1
       inputs:
-        connectedServiceName: 'devopsdev3_Mohan'
+        connectedServiceName: 'amar_devops'
         UpstreamJob: 'Deploy'
         Phase: 'STARTED'
     - task: Delay@1
@@ -95,12 +95,12 @@ stages:
         delayForMinutes: '0'
     - task: ServiceNow-DevOps-Server-Change-Acceleration@1
       inputs:
-        connectedServiceName: 'devopsdev3_Mohan'
+        connectedServiceName: 'amar_devops'
         UpstreamJob: 'Deploy'
       
     - task: ServiceNow-DevOps-Server-Job-Notification@1
       inputs:
-        connectedServiceName: 'devopsdev3_Mohan'
+        connectedServiceName: 'amar_devops'
         UpstreamJob: 'Deploy'
         Phase: 'COMPLETED'
       condition: true
