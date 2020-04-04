@@ -1,19 +1,106 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - master
+name: $(Date:yyyyMMdd)$(Rev:.r)
 
-pool:
-  vmImage: 'ubuntu-latest'
+stages:
+- stage: Build
+  jobs:
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  - job: 'Build'
+    steps:
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'devopsdev3_Mohan'
+        Phase: 'STARTED'
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          
+          echo 'Hello world'
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'devopsdev3_Mohan'
+        Phase: 'COMPLETED'
+  - job: 'Test'
+    dependsOn: 'Build'
+    steps:
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'devopsdev3_Mohan'
+        upstream: 'Build'
+        Phase: 'STARTED'
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.6'
+        architecture: 'x64'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r django-basic/requirements.txt
+      displayName: 'Install dependencies'
+
+    - script: |
+        pip install pytest-django
+        cd django-basic/azuredemo
+        pytest --junitxml=../../reports/django-basic.xml
+      displayName: 'Run tests'
+
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFiles: 'reports/django-basic.xml'
+        testRunTitle: 'Test'
+      condition: succeededOrFailed()
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'devopsdev3_Mohan'
+        upstream: 'Build'
+        Phase: 'COMPLETED'
+- stage: Test
+  jobs:
+
+  - job: "Deploy"
+    steps:
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'devopsdev3_Mohan'
+        upstream: 'Test'
+        Phase: 'STARTED'
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          
+          echo 'Hello world '
+
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'devopsdev3_Mohan'
+        upstream: 'Test'
+        Phase: 'COMPLETED'
+
+  - job: "Prod"
+    pool: server
+    dependsOn: "Deploy"
+    steps:
+    - task: ServiceNow-DevOps-Server-Job-Notification@1
+      inputs:
+        connectedServiceName: 'devopsdev3_Mohan'
+        UpstreamJob: 'Deploy'
+        Phase: 'STARTED'
+    - task: Delay@1
+      inputs:
+        delayForMinutes: '0'
+    - task: ServiceNow-DevOps-Server-Change-Acceleration@1
+      inputs:
+        connectedServiceName: 'devopsdev3_Mohan'
+        UpstreamJob: 'Deploy'
+      
+    - task: ServiceNow-DevOps-Server-Job-Notification@1
+      inputs:
+        connectedServiceName: 'devopsdev3_Mohan'
+        UpstreamJob: 'Deploy'
+        Phase: 'COMPLETED'
+      condition: true
