@@ -35,23 +35,6 @@ stages:
       inputs:
         versionSpec: '3.6'
         architecture: 'x64'
-
-    - script: |
-        python -m pip install --upgrade pip
-        pip install -r django-basic/requirements.txt
-      displayName: 'Install dependencies'
-
-    - script: |
-        pip install pytest-django
-        cd django-basic/azuredemo
-        pytest --junitxml=../../reports/django-basic.xml
-      displayName: 'Run tests'
-
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFiles: 'reports/django-basic.xml'
-        testRunTitle: 'Test'
-      condition: succeededOrFailed()
     - task: ServiceNow-DevOps-Agent-Job-Notification@1
       inputs:
         connectedServiceName: 'amardevops'
