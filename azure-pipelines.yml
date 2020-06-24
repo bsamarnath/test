@@ -8,48 +8,24 @@ stages:
 
   - job: 'Build'
     steps:
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        Phase: 'STARTED'
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           # Write your commands here
-          
           echo 'Hello world'
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        Phase: 'COMPLETED'
   - job: 'Test'
     dependsOn: 'Build'
     steps:
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        upstream: 'Build'
-        Phase: 'STARTED'
     - task: UsePythonVersion@0
       inputs:
         versionSpec: '3.6'
         architecture: 'x64'
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        upstream: 'Build'
-        Phase: 'COMPLETED'
 - stage: Test
   jobs:
 
   - job: "Deploy"
     steps:
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        upstream: 'Test'
-        Phase: 'STARTED'
     - task: Bash@3
       inputs:
         targetType: 'inline'
@@ -68,22 +44,6 @@ stages:
     pool: server
     dependsOn: "Deploy"
     steps:
-    - task: ServiceNow-DevOps-Server-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        UpstreamJob: 'Deploy'
-        Phase: 'STARTED'
     - task: Delay@1
       inputs:
         delayForMinutes: '0'
-    - task: ServiceNow-DevOps-Server-Change-Acceleration@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        UpstreamJob: 'Deploy'
-      
-    - task: ServiceNow-DevOps-Server-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        UpstreamJob: 'Deploy'
-        Phase: 'COMPLETED'
-      condition: true
