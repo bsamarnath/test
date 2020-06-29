@@ -8,12 +8,17 @@ stages:
 
   - job: 'Build'
     steps:
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'amardevops'
+        Phase: 'STARTED'
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           # Write your commands here
           echo 'Hello world'
+    
   - job: 'Test'
     dependsOn: 'Build'
     steps:
@@ -23,9 +28,13 @@ stages:
         architecture: 'x64'
 - stage: Test
   jobs:
-
   - job: "Deploy"
     steps:
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'amardevops'
+        upstream: 'Build'
+        Phase: 'STARTED'
     - task: Bash@3
       inputs:
         targetType: 'inline'
