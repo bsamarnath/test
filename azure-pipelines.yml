@@ -8,46 +8,23 @@ stages:
 
   - job: 'Build'
     steps:
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        Phase: 'STARTED'
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           # Write your commands here
           echo 'Hello world'
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        Phase: 'COMPLETED'
   - job: 'Test'
     dependsOn: 'Build'
     steps:
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        upstream: 'Build'
-        Phase: 'STARTED'
     - task: UsePythonVersion@0
       inputs:
         versionSpec: '3.6'
         architecture: 'x64'
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        upstream: 'Build'
-        Phase: 'COMPLETED'
 - stage: Test
   jobs:
   - job: "Deploy"
     steps:
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        upstream: 'Build'
-        Phase: 'STARTED'
     - task: Bash@3
       inputs:
         targetType: 'inline'
@@ -55,30 +32,13 @@ stages:
           # Write your commands here
           
           echo 'Hello world '
-
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        upstream: 'Build'
-        Phase: 'COMPLETED'
 
   - job: "Prod"
     dependsOn: "Deploy"
     steps:
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        upstream: 'Deploy'
-        Phase: 'STARTED'
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           # Write your commands here
-          
           echo 'Hello world '
-    - task: ServiceNow-DevOps-Agent-Job-Notification@1
-      inputs:
-        connectedServiceName: 'amardevops'
-        upstream: 'Deploy'
-        Phase: 'COMPLETED'
