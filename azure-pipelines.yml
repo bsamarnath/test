@@ -70,10 +70,13 @@ stages:
         connectedServiceName: 'amardevops'
         upstream: 'Deploy'
         Phase: 'STARTED'
-
-    - task: Delay@1
+    - task: Bash@3
       inputs:
-        delayForMinutes: '0'
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          
+          echo 'Hello world '
     - task: ServiceNow-DevOps-Agent-Job-Notification@1
       inputs:
         connectedServiceName: 'amardevops'
