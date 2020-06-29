@@ -63,7 +63,6 @@ stages:
         Phase: 'COMPLETED'
 
   - job: "Prod"
-    pool: server
     dependsOn: "Deploy"
     steps:
     - task: ServiceNow-DevOps-Agent-Job-Notification@1
