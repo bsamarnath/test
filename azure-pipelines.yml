@@ -18,14 +18,27 @@ stages:
         script: |
           # Write your commands here
           echo 'Hello world'
-    
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'amardevops'
+        Phase: 'COMPLETED'
   - job: 'Test'
     dependsOn: 'Build'
     steps:
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'amardevops'
+        upstream: 'Build'
+        Phase: 'STARTED'
     - task: UsePythonVersion@0
       inputs:
         versionSpec: '3.6'
         architecture: 'x64'
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'amardevops'
+        upstream: 'Build'
+        Phase: 'COMPLETED'
 - stage: Test
   jobs:
   - job: "Deploy"
@@ -46,13 +59,24 @@ stages:
     - task: ServiceNow-DevOps-Agent-Job-Notification@1
       inputs:
         connectedServiceName: 'amardevops'
-        upstream: 'Test'
+        upstream: 'Build'
         Phase: 'COMPLETED'
 
   - job: "Prod"
     pool: server
     dependsOn: "Deploy"
     steps:
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'amardevops'
+        upstream: 'Deploy'
+        Phase: 'STARTED'
+
     - task: Delay@1
       inputs:
         delayForMinutes: '0'
+    - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      inputs:
+        connectedServiceName: 'amardevops'
+        upstream: 'Deploy'
+        Phase: 'COMPLETED'
