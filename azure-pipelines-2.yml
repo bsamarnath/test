@@ -44,6 +44,3 @@ stages:
       inputs:
         versionSpec: '3.6'
         architecture: 'x64'
-    - task: Delay@1
-      inputs:
-        delayForMinutes: '0'
