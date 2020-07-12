@@ -23,7 +23,7 @@ stages:
         architecture: 'x64'
 - stage: Test
   jobs:
-  - job: "Test"
+  - job: "Deploy"
     steps:
     - task: Bash@3
       inputs:
@@ -34,7 +34,7 @@ stages:
           echo 'Hello world '
 
   - job: "Prod"
-    dependsOn: "Test"
+    dependsOn: "Deploy"
     steps:
     - task: Bash@3
       inputs:
