@@ -18,6 +18,7 @@ stages:
           # Write your commands here
           echo 'First job '
   - job: "Two"
+    dependsOn: 'One'
     steps:
     - task: Bash@3
       inputs:
