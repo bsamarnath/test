@@ -52,3 +52,23 @@ stages:
             "branchName": "$(build.sourceBranchName)"
                    }
         waitForCompletion: 'true'
+
+- stage: Deploy
+  jobs:
+  - job: 'Five'
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'Hello world'
+  - job: 'Six'
+    dependsOn: 'Five'
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          echo 'Hello world '
