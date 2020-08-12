@@ -62,7 +62,7 @@ stages:
           # Write your commands here
 - stage: PROD
   jobs:
-  - job: “Build”
+  - job: "Build"
     steps:
     - task: Bash@3
       inputs:
