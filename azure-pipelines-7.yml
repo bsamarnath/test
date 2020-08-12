@@ -12,52 +12,52 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 stages:
 - stage: DEV
   jobs:
-  - job: “Build”
+  - job: "Build"
     steps:
     - task: Bash@3
       inputs:
-        targetType: ‘inline’
+        targetType: 'inline'
         script: |
           # Write your commands here
-  - job: ‘Test’
-    dependsOn: ‘Build’
+  - job: 'Test'
+    dependsOn: 'Build'
     steps:
     - task: Bash@3
       inputs:
-        targetType: ‘inline’
+        targetType: 'inline'
         script: |
           # Write your commands here
-  - job: ‘Deploy’
-    dependsOn: ‘Test’
+  - job: 'Deploy'
+    dependsOn: 'Test'
     steps:
     - task: Bash@3
       inputs:
-        targetType: ‘inline’
+        targetType: 'inline'
         script: |
           # Write your commands here
 - stage: QA
   jobs:
-  - job: “Build”
+  - job: "Build"
     steps:
     - task: Bash@3
       inputs:
-        targetType: ‘inline’
+        targetType: 'inline'
         script: |
           # Write your commands here
-  - job: ‘Test’
-    dependsOn: ‘Build’
+  - job: 'Test'
+    dependsOn: 'Build'
     steps:
     - task: Bash@3
       inputs:
-        targetType: ‘inline’
+        targetType: 'inline'
         script: |
           # Write your commands here
-  - job: ‘Deploy’
-    dependsOn: ‘Test’
+  - job: 'Deploy'
+    dependsOn: 'Test'
     steps:
     - task: Bash@3
       inputs:
-        targetType: ‘inline’
+        targetType: 'inline'
         script: |
           # Write your commands here
 - stage: PROD
@@ -66,22 +66,22 @@ stages:
     steps:
     - task: Bash@3
       inputs:
-        targetType: ‘inline’
+        targetType: 'inline'
         script: |
           # Write your commands here
-  - job: ‘Test’
-    dependsOn: ‘Build’
+  - job: 'Test'
+    dependsOn: 'Build'
     steps:
     - task: Bash@3
       inputs:
-        targetType: ‘inline’
+        targetType: 'inline'
         script: |
           # Write your commands here
-  - job: ‘Deploy’
-    dependsOn: ‘Test’
+  - job: 'Deploy'
+    dependsOn: 'Test'
     steps:
     - task: Bash@3
       inputs:
-        targetType: ‘inline’
+        targetType: 'inline'
         script: |
           # Write your commands here
