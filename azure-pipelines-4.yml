@@ -5,7 +5,7 @@
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
 stages:
-- stage:First
+- stage: First
   jobs:
   - job: "One"
     steps:
@@ -24,7 +24,7 @@ stages:
         script: |
           # Write your commands here
           echo 'Hello world '
-- stage:Second
+- stage: Second
   jobs:
   - job: 'Three'
     steps:
@@ -51,7 +51,7 @@ stages:
                    }
         waitForCompletion: 'true'
 
-- stage:Third
+- stage: Third
   jobs:
   - job: 'Five'
     steps:
